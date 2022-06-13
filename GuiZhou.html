@@ -1,0 +1,1672 @@
+<html>
+  <head>
+    <style type="text/css">
+      .amap-indoor-map .label-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .amap-indoor-map .highlight-image-con * {
+        pointer-events: none;
+      }
+      .amap-indoormap-floorbar-control {
+        position: absolute;
+        margin: auto 0;
+        bottom: 165px;
+        right: 12px;
+        width: 35px;
+        text-align: center;
+        line-height: 1.3em;
+        overflow: hidden;
+        padding: 0 2px;
+      }
+      .amap-indoormap-floorbar-control .panel-box {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 3px;
+        border: 1px solid #ccc;
+      }
+      .amap-indoormap-floorbar-control .select-dock {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        box-sizing: border-box;
+        height: 30px;
+        border: solid #4196ff;
+        border-width: 0 2px;
+        border-radius: 2px;
+        pointer-events: none;
+        background: linear-gradient(
+          to bottom,
+          #f6f8f9 0,
+          #e5ebee 50%,
+          #d7dee3 51%,
+          #f5f7f9 100%
+        );
+      }
+      .amap-indoor-map .transition {
+        transition: opacity 0.2s;
+      }
+      ,
+      .amap-indoormap-floorbar-control .transition {
+        transition: top 0.2s, margin-top 0.2s;
+      }
+      .amap-indoormap-floorbar-control .select-dock:after,
+      .amap-indoormap-floorbar-control .select-dock:before {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        left: 0;
+        top: 10px;
+        border: solid transparent;
+        border-width: 4px;
+        border-left-color: #4196ff;
+      }
+      .amap-indoormap-floorbar-control .select-dock:after {
+        right: 0;
+        left: auto;
+        border-left-color: transparent;
+        border-right-color: #4196ff;
+      }
+      .amap-indoormap-floorbar-control.is-mobile {
+        width: 37px;
+      }
+      .amap-indoormap-floorbar-control.is-mobile .floor-btn {
+        height: 35px;
+        line-height: 35px;
+      }
+      .amap-indoormap-floorbar-control.is-mobile .select-dock {
+        height: 35px;
+        top: 36px;
+      }
+      .amap-indoormap-floorbar-control.is-mobile .select-dock:after,
+      .amap-indoormap-floorbar-control.is-mobile .select-dock:before {
+        top: 13px;
+      }
+      .amap-indoormap-floorbar-control.is-mobile .floor-list-box {
+        height: 105px;
+      }
+      .amap-indoormap-floorbar-control .floor-list-item .floor-btn {
+        color: #555;
+        font-family: "Times New Roman", sans-serif, "Microsoft Yahei";
+        font-size: 16px;
+      }
+      .amap-indoormap-floorbar-control .floor-list-item.selected .floor-btn {
+        color: #000;
+      }
+      .amap-indoormap-floorbar-control .floor-btn {
+        height: 28px;
+        line-height: 28px;
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      .amap-indoormap-floorbar-control .floor-btn:hover {
+        background-color: rgba(221, 221, 221, 0.4);
+      }
+      .amap-indoormap-floorbar-control .floor-minus,
+      .amap-indoormap-floorbar-control .floor-plus {
+        position: relative;
+        text-indent: -1000em;
+      }
+      .amap-indoormap-floorbar-control .floor-minus:after,
+      .amap-indoormap-floorbar-control .floor-plus:after {
+        content: "";
+        position: absolute;
+        margin: auto;
+        top: 9px;
+        left: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        border: solid transparent;
+        border-width: 10px 8px;
+        border-top-color: #777;
+      }
+      .amap-indoormap-floorbar-control .floor-minus.disabled,
+      .amap-indoormap-floorbar-control .floor-plus.disabled {
+        opacity: 0.3;
+      }
+      .amap-indoormap-floorbar-control .floor-plus:after {
+        border-bottom-color: #777;
+        border-top-color: transparent;
+        top: -3px;
+      }
+      .amap-indoormap-floorbar-control .floor-list-box {
+        max-height: 153px;
+        position: relative;
+        overflow-y: hidden;
+      }
+      .amap-indoormap-floorbar-control .floor-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .amap-indoormap-floorbar-control .floor-list-item {
+        position: relative;
+      }
+      .amap-indoormap-floorbar-control .floor-btn.disabled,
+      .amap-indoormap-floorbar-control .floor-btn.disabled *,
+      .amap-indoormap-floorbar-control.with-indrm-loader * {
+        -webkit-pointer-events: none !important;
+        pointer-events: none !important;
+      }
+      .amap-indoormap-floorbar-control .with-indrm-loader .floor-nonas {
+        opacity: 0.5;
+      }
+      .amap-indoor-map-moverf-marker {
+        color: #555;
+        background-color: #fffeef;
+        border: 1px solid #7e7e7e;
+        padding: 3px 6px;
+        font-size: 12px;
+        white-space: nowrap;
+        display: inline-block;
+        position: absolute;
+        top: 1em;
+        left: 1.2em;
+      }
+      .amap-indoormap-floorbar-control .amap-indrm-loader {
+        -moz-animation: amap-indrm-loader 1250ms infinite linear;
+        -webkit-animation: amap-indrm-loader 1250ms infinite linear;
+        animation: amap-indrm-loader 1250ms infinite linear;
+        border: 2px solid #91a3d8;
+        border-right-color: transparent;
+        box-sizing: border-box;
+        display: inline-block;
+        overflow: hidden;
+        text-indent: -9999px;
+        width: 13px;
+        height: 13px;
+        border-radius: 7px;
+        position: absolute;
+        margin: auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      @-moz-keyframes amap-indrm-loader {
+        0% {
+          -moz-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+        100% {
+          -moz-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      @-webkit-keyframes amap-indrm-loader {
+        0% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes amap-indrm-loader {
+        0% {
+          -moz-transform: rotate(0deg);
+          -ms-transform: rotate(0deg);
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+        100% {
+          -moz-transform: rotate(360deg);
+          -ms-transform: rotate(360deg);
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <style type="text/css">
+      .amap-logo {
+        display: block !important;
+        pointer-events: none;
+      }
+    </style>
+    <style type="text/css" class="AMap.style">
+      .vml {
+        behavior: url(#default#VML);
+        display: inline-block;
+        position: absolute;
+      }
+      .amap-custom {
+        top: 0;
+        left: 0;
+        position: absolute;
+      }
+      .amap-container img {
+        max-width: none !important;
+        max-height: none !important;
+      }
+      .amap-container {
+        touch-action: none;
+        position: relative;
+        overflow: hidden;
+        background: #fcf9f2
+          url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0AgMAAAC2uDcZAAAADFBMVEX////////////////1pQ5zAAAABHRSTlMAgP/AWuZC2AAAAVhJREFUeAFiYGAQYGDEQjAB2rcDC4BiGIqiU7abdKlO2QkeIClyPsDHweMKtOPHIJ1Op6/w7Y4fdqfT6VpndzqdrnV2p9PpWmd3Oj3qWndSoKp+2J1Op7vr7E6n07XO7nQ6XevsTqfTtc7udPo4/f787E6n0911dqfT6VpndzqdrnV2p9PpWmd3Ot27Ce8m6HS6u85dR6fTtU7r6HS61mkdnU7XOrvT6XTvJuxOp9PddXan0+laZ3c6na51dDpd67SOTqd7N+HdBJ1Od9e56+h0utZpHZ1O1zq70+l0rbM7nU73bsLudDrdXWd3Ol3rtI5Op2ud1tHpdK3TOjqd7t2EdxN0Ot1dZ3c6na51dqfT6VpndzqdrnV2p9Pp3k3Q6XR3nbuOTqdrndbR6XSt0zo6na51Wken072bsDudTnfX2Z1Op2ud3el0utbZnU7XOq2j0+t0uncTD1gO4zoT5doZAAAAAElFTkSuQmCC);
+        -ms-touch-action: none;
+      }
+      .amap-drags,
+      .amap-layers {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        overflow: hidden;
+      }
+      .amap-layers canvas {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      .amap-layer img {
+        pointer-events: none;
+      }
+      .amap-e,
+      .amap-maps {
+        width: 100%;
+        height: 100%;
+      }
+      .amap-maps,
+      .amap-e,
+      .amap-layers,
+      .amap-tile,
+      .amap-tile-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+      }
+      .amap-context {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .amap-overlays,
+      .amap-markers,
+      .amap-marker {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .amap-layers {
+        z-index: 0;
+      }
+      .amap-overlays {
+        z-index: 110;
+        cursor: default;
+      }
+      .amap-markers {
+        z-index: 120;
+      }
+      .amap-controls {
+        z-index: 150;
+      }
+      .amap-copyright {
+        position: absolute;
+        display: block !important;
+        left: 77px;
+        height: 16px;
+        bottom: 0;
+        padding-bottom: 3px;
+        font-size: 11px;
+        font-family: Arial, sans-serif;
+        z-index: 160;
+      }
+      .amap-logo {
+        position: absolute;
+        bottom: 1px;
+        left: 1px;
+        z-index: 160;
+        height: 20px;
+      }
+      .amap-logo img {
+        width: 73px !important;
+        height: 20px !important;
+        border: 0;
+        vertical-align: baseline !important;
+      }
+      .amap-icon {
+        position: relative;
+        z-index: 1;
+      }
+      .amap-icon img {
+        position: absolute;
+        z-index: -1;
+      }
+      .amap-marker-label {
+        position: absolute;
+        z-index: 2;
+        border: 1px solid blue;
+        background-color: white;
+        white-space: nowrap;
+        cursor: default;
+        padding: 3px;
+        font-size: 12px;
+        line-height: 14px;
+      }
+      .amap-info {
+        position: absolute;
+        left: 0;
+        z-index: 140;
+        width: 320px;
+      }
+      .amap-menu {
+        position: absolute;
+        z-index: 140;
+        _width: 100px;
+      }
+      .amap-info-close {
+        position: absolute;
+        right: 5px;
+        _right: 12px;
+        +right: 11px;
+        top: 5px;
+        _top: 2px;
+        +top: 2px;
+        color: #c3c3c3;
+        text-decoration: none;
+        font: bold 16px/14px Tahoma, Verdana, sans-serif;
+        width: 14px;
+        height: 14px;
+      }
+      .amap-info-outer,
+      .amap-menu-outer {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        background: none repeat scroll 0 0 white;
+        border-radius: 2px;
+        padding: 1px;
+        text-align: left;
+      }
+      .amap-menu-outer:hover {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+      .amap-info-contentContainer:hover .amap-info-outer {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+      .amap-info-content {
+        position: relative;
+        background: #fff;
+        padding: 10px 18px 10px 10px;
+        line-height: 1.4;
+        overflow: auto;
+      }
+      .amap-marker-content {
+        position: relative;
+      }
+      .amap-info {
+        _width: 320px;
+      }
+      .amap-menu {
+        _width: 100px;
+      }
+      .amap-info-sharp-old {
+        overflow: hidden;
+        position: absolute;
+        background-image: url(http://webapi.amap.com/images/arrows.png);
+      }
+      .bottom-center .amap-info-sharp-old {
+        height: 12px;
+        margin: 0 auto;
+        width: 20px;
+        background-position: center 12px;
+        top: 100%;
+        margin-top: -9px;
+        left: 50%;
+        margin-left: -10px;
+      }
+      .bottom-left .amap-info-sharp-old {
+        height: 12px;
+        width: 13px;
+        background-position: -16px -46px;
+        top: 100%;
+        margin-top: -9px;
+      }
+      .bottom-right .amap-info-sharp-old {
+        height: 12px;
+        width: 13px;
+        top: -1px;
+        background-position: -56px -46px;
+        left: 100%;
+        margin-left: -13px;
+        top: 100%;
+        margin-top: -9px;
+      }
+      .middle-left .amap-info-sharp-old {
+        height: 20px;
+        width: 12px;
+        background-position: left;
+        top: 50%;
+        margin-top: -10px;
+        margin-left: -11px;
+      }
+      .center .amap-info-sharp-old {
+        display: none;
+      }
+      .middle-right .amap-info-sharp-old {
+        height: 20px;
+        margin-right: 0;
+        width: 12px;
+        background-position: right;
+        left: 100%;
+        margin-left: -9px;
+        top: 50%;
+        margin-top: -10px;
+      }
+      .top-center .amap-info-sharp-old {
+        height: 12px;
+        margin: 0 auto;
+        width: 20px;
+        background-position: top;
+        top: 0;
+        margin-top: -3px;
+        left: 50%;
+        margin-left: -10px;
+      }
+      .top-left .amap-info-sharp-old {
+        height: 12px;
+        width: 13px;
+        background-position: -16px -3px;
+        top: 0;
+        margin-top: -3px;
+      }
+      .top-right .amap-info-sharp-old {
+        height: 12px;
+        width: 13px;
+        background-position: -56px -3px;
+        left: 100%;
+        margin-left: -13px;
+        top: 0;
+        margin-top: -3px;
+      }
+      .amap-info-sharp {
+        position: absolute;
+      }
+      .bottom-center .amap-info-sharp {
+        bottom: 0;
+        left: 50%;
+        margin-left: -8px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #fff;
+      }
+      .bottom-center .amap-info-sharp:after {
+        position: absolute;
+        content: "";
+        margin-left: -8px;
+        margin-top: -7px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid rgba(0, 0, 0, 0.3);
+        filter: blur(2px);
+        z-index: -1;
+      }
+      .amap-info-contentContainer:hover.bottom-center .amap-info-sharp:after {
+        border-top: 8px solid rgba(0, 0, 0, 0.5);
+      }
+      .bottom-left .amap-info-sharp {
+        border-color: transparent #fff;
+        border-width: 0 0 10px 10px;
+        border-style: solid;
+      }
+      .bottom-left .amap-info-sharp:after {
+        position: absolute;
+        content: "";
+        margin-left: -10px;
+        border-color: transparent rgba(0, 0, 0, 0.3);
+        border-width: 0 0 10px 10px;
+        border-style: solid;
+        filter: blur(1px);
+        z-index: -1;
+      }
+      .amap-info-contentContainer:hover.bottom-left .amap-info-sharp:after {
+        border-color: transparent rgba(0, 0, 0, 0.5);
+      }
+      .bottom-left .amap-info-content {
+        border-radius: 2px 2px 2px 0;
+      }
+      .bottom-right .amap-info-sharp {
+        right: 0;
+        border-top: 10px solid #fff;
+        border-left: 10px solid transparent;
+      }
+      .bottom-right .amap-info-sharp:after {
+        position: absolute;
+        margin-top: -9px;
+        margin-left: -10px;
+        content: "";
+        border-top: 10px solid rgba(0, 0, 0, 0.3);
+        border-left: 10px solid transparent;
+        filter: blur(1px);
+        z-index: -1;
+      }
+      .amap-info-contentContainer:hover.bottom-right .amap-info-sharp:after {
+        border-top: 10px solid rgba(0, 0, 0, 0.5);
+      }
+      .bottom-right .amap-info-content {
+        border-radius: 2px 2px 0 2px;
+      }
+      .top-center .amap-info-sharp {
+        top: 0;
+        left: 50%;
+        margin-left: -8px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid #fff;
+      }
+      .top-center .amap-info-sharp:after {
+        position: absolute;
+        content: "";
+        margin-top: 0;
+        margin-left: -8px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid rgba(0, 0, 0, 0.3);
+        filter: blur(1px);
+        z-index: -1;
+      }
+      .top-left .amap-info-sharp {
+        left: 0;
+        top: 0;
+        border-bottom: 10px solid #fff;
+        border-right: 10px solid transparent;
+      }
+      .top-left .amap-info-sharp:after {
+        position: absolute;
+        content: "";
+        margin-top: 0;
+        margin-left: 0;
+        border-bottom: 10px solid rgba(0, 0, 0, 0.3);
+        border-right: 10px solid transparent;
+        filter: blur(1px);
+        z-index: -1;
+      }
+      .top-right .amap-info-sharp {
+        right: 0;
+        top: 0;
+        border-bottom: 10px solid #fff;
+        border-left: 10px solid transparent;
+      }
+      .top-right .amap-info-sharp:after {
+        position: absolute;
+        content: "";
+        margin-top: 0;
+        margin-left: -10px;
+        border-bottom: 10px solid rgba(0, 0, 0, 0.3);
+        border-left: 10px solid transparent;
+        filter: blur(1px);
+        z-index: -1;
+      }
+      .middle-right .amap-info-sharp {
+        right: 0;
+        top: 50%;
+        margin-top: -8px;
+        border-top: 8px solid transparent;
+        border-left: 8px solid #fff;
+        border-bottom: 8px solid transparent;
+      }
+      .middle-right .amap-info-sharp:after {
+        position: absolute;
+        content: "";
+        margin-top: -8px;
+        margin-left: -8px;
+        border-top: 8px solid transparent;
+        border-left: 8px solid rgba(0, 0, 0, 0.3);
+        border-bottom: 8px solid transparent;
+        filter: blur(1px);
+        z-index: -1;
+      }
+      .amap-info-contentContainer:hover.middle-right .amap-info-sharp:after {
+        border-left: 8px solid rgba(0, 0, 0, 0.5);
+      }
+      .middle-left .amap-info-sharp {
+        left: 0;
+        top: 50%;
+        margin-top: -8px;
+        border-top: 8px solid transparent;
+        border-right: 8px solid #fff;
+        border-bottom: 8px solid transparent;
+      }
+      .middle-left .amap-info-sharp:after {
+        position: absolute;
+        content: "";
+        margin-top: -8px;
+        margin-left: 0;
+        border-top: 8px solid transparent;
+        border-right: 8px solid rgba(0, 0, 0, 0.3);
+        border-bottom: 8px solid transparent;
+        filter: blur(1px);
+        z-index: -1;
+      }
+      .amap-info-contentContainer:hover.middle-left .amap-info-sharp:after {
+        border-right: 8px solid rgba(0, 0, 0, 0.5);
+      }
+      .amap-info-contentContainer.top-left,
+      .amap-info-contentContainer.top-center,
+      .amap-info-contentContainer.top-right {
+        padding-top: 8px;
+      }
+      .amap-info-contentContainer.bottom-left,
+      .amap-info-contentContainer.bottom-center,
+      .amap-info-contentContainer.bottom-right {
+        padding-bottom: 8px;
+      }
+      .amap-info-contentContainer.middle-right {
+        padding-right: 8px;
+      }
+      .amap-info-contentContainer.middle-left {
+        padding-left: 8px;
+      }
+      .amap-menu-outer {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+      }
+      ul.amap-menu-outer li {
+        cursor: pointer;
+        height: 35px;
+        line-height: 35px;
+        word-break: break-all;
+        padding: 0 10px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      ul.amap-menu-outer li a {
+        text-decoration: none;
+        font-size: 13px;
+        margin: 0 5px;
+        color: #000;
+        padding: 5px 5px;
+      }
+      ul.amap-menu-outer li:hover {
+        background-color: #f3f3ee;
+      }
+      .amap-overlay-text-container {
+        display: block;
+        width: auto;
+        word-break: keep-all;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background: #fff;
+        padding: 2px 3px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+      .amap-overlay-text-container.amap-overlay-text-empty {
+        display: none;
+      }
+      .amap-info-content-ie8 {
+        border: 1px solid #9c9c9c;
+      }
+    </style>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <link href="css/StyleSheet1.css" rel="stylesheet" type="text/css" />
+    <script
+      type="text/javascript"
+      src="http://api.map.baidu.com/api?key=&amp;v=1.1&amp;services=true"
+    ></script>
+    <script
+      type="text/javascript"
+      src="http://api.map.baidu.com/getscript?v=1.1&amp;ak=&amp;services=true&amp;t=20130716024058"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="http://api.map.baidu.com/res/11/bmap.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/swiper.min.css" />
+    <style type="text/css">
+      .amap-container {
+        cursor: url(https://webapi.amap.com/theme/v1.3/openhand.cur), default;
+      }
+      .amap-drag {
+        cursor: url(https://webapi.amap.com/theme/v1.3/closedhand.cur), default;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form3" method="post" action="hua">
+      <div class="div">
+        <div>
+          <div class="div1">
+            <img src="img/shouye.jpg" width="100%" height="866px" alt=" " />
+          </div>
+          <div class="tubiao">
+            <a><img src="img/w.png" width="90px" height="90px" alt=" " /></a>
+          </div>
+          <div class="div2">
+            <ul>
+              <li class="sp"><a href="fenlei">目的地</a></li>
+              <li class="sp"><a href="hotel1">预约</a></li>
+              <li class="sp"><a href="Shopping">商城</a></li>
+            </ul>
+          </div>
+
+          <div class="sp1">
+            <input
+              type="hidden"
+              name="_token"
+              value="pTglW7H1Qd3bnXQGYzdYtzMVX45wtA1CtvJaIdNS"
+            />
+            <div class="d"><a href="denglu?url=index">登录</a></div>
+          </div>
+          <div class="div4">CHINA</div>
+          <div class="div5">多彩贵州</div>
+          <div class="div6">Worthwhile seeing,Guizhou</div>
+        </div>
+
+        <div class="div7">
+          <ul>
+            <li>
+              <a target="_blank" href="http://www.gzmuseum.com/">博物馆</a>
+            </li>
+            <li><a href="#container">地图</a></li>
+            <li><a href="#you">游玩指南</a></li>
+            <li><a href="article">文章</a></li>
+            <li><a href="#">书籍</a></li>
+            <li><a href="#">交流</a></li>
+          </ul>
+        </div>
+        <hr class="hr" />
+
+        <div>
+          <div class="div8">我们为什么会爱贵州</div>
+          <hr class="hr1" size="3px" color="chocolate" />
+          <div class="div9">
+            贵州是迷人的“天然公园”。境内自然风光神奇秀美，山水景色千姿百态，溶洞景观绚丽多彩，
+            野生动物奇妙无穷，文化和革命遗迹闻名遐迩；山、水、洞、林、石交相辉映，浑然一体。闻名世
+            界的黄果树瀑布、龙宫、赤水、织金洞、马岭河峡谷等国家级风景名胜区和铜仁梵净山，茂兰喀斯特
+            森林、赤水桫椤国家级自然保护区、威宁草海等国家级自然保护区，犹如一串串璀璨的宝石，五光十色，
+            令人目不暇接、流连忘返。<span class="span1"
+              ><a href="article">阅读更多&gt;</a></span
+            >
+          </div>
+          <div class="div10"><img src="img/biao12.png" /></div>
+        </div>
+
+        <hr class="hr2" />
+
+        <div class="divv">
+          <div class="div11">贵州景点</div>
+          <hr class="hr1" size="3px" color="chocolate" />
+
+          <div
+            class="swiper-container swiper-container-initialized swiper-container-horizontal"
+          >
+            <div
+              class="swiper-wrapper"
+              style="
+                transition-duration: 0ms;
+                transform: translate3d(-5700px, 0px, 0px);
+              "
+            >
+              <div
+                class="swiper-slide swiper-lazy swiper-slide-duplicate swiper-lazy-loaded"
+                data-theme="white"
+                data-swiper-slide-index="4"
+                style="width: 1900px; background-image: url('img/qian.jpg')"
+              >
+                <a href="javascript:"></a>
+              </div>
+              <div
+                class="swiper-slide swiper-lazy swiper-lazy-loaded"
+                data-theme="gray"
+                data-swiper-slide-index="0"
+                style="width: 1900px; background-image: url('img/huang.jpg')"
+              >
+                <a href="javascript:"></a>
+              </div>
+              <div
+                class="swiper-slide swiper-lazy swiper-lazy-loaded swiper-slide-prev"
+                data-theme="gray"
+                data-swiper-slide-index="1"
+                style="width: 1900px; background-image: url('img/jia.jpg')"
+              >
+                <a href="javascript:"></a>
+              </div>
+              <div
+                class="swiper-slide swiper-lazy swiper-lazy-loaded swiper-slide-active"
+                data-theme="white"
+                data-swiper-slide-index="2"
+                style="width: 1900px; background-image: url('img/fan.jpg')"
+              >
+                <a href="javascript:"></a>
+              </div>
+              <div
+                class="swiper-slide swiper-lazy swiper-slide-next swiper-lazy-loaded"
+                data-theme="gray"
+                data-swiper-slide-index="3"
+                style="width: 1900px; background-image: url('img/zyhz.jpg')"
+              >
+                <a href="javascript:"></a>
+              </div>
+              <div
+                class="swiper-slide swiper-lazy swiper-lazy-loaded"
+                data-theme="white"
+                data-swiper-slide-index="4"
+                style="width: 1900px; background-image: url('img/qian.jpg')"
+              >
+                <a href="javascript:"></a>
+              </div>
+
+              <div
+                class="swiper-slide swiper-lazy swiper-slide-duplicate swiper-lazy-loaded"
+                data-theme="gray"
+                data-swiper-slide-index="0"
+                style="width: 1900px; background-image: url('img/huang.jpg')"
+              >
+                <a href="javascript:"></a>
+              </div>
+            </div>
+            <div
+              class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"
+            >
+              <span
+                class="swiper-pagination-bullet"
+                tabindex="0"
+                role="button"
+                aria-label="Go to slide 1"
+              ></span
+              ><span
+                class="swiper-pagination-bullet"
+                tabindex="0"
+                role="button"
+                aria-label="Go to slide 2"
+              ></span
+              ><span
+                class="swiper-pagination-bullet swiper-pagination-bullet-active"
+                tabindex="0"
+                role="button"
+                aria-label="Go to slide 3"
+              ></span
+              ><span
+                class="swiper-pagination-bullet"
+                tabindex="0"
+                role="button"
+                aria-label="Go to slide 4"
+              ></span
+              ><span
+                class="swiper-pagination-bullet"
+                tabindex="0"
+                role="button"
+                aria-label="Go to slide 5"
+              ></span>
+            </div>
+            <span
+              class="swiper-notification"
+              aria-live="assertive"
+              aria-atomic="true"
+            ></span>
+          </div>
+        </div>
+        <div class="div19"><a href="fenlei">查看所有景点&gt;</a></div>
+        <div class="div20">
+          <div
+            id="container"
+            class="amap-container"
+            style="position: relative; background: rgb(252, 249, 242)"
+          >
+            <object
+              style="
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
+                pointer-events: none;
+                z-index: -1;
+              "
+              type="text/html"
+              data="about:blank"
+            ></object>
+            <div class="amap-maps">
+              <div class="amap-drags" style="">
+                <div class="amap-layers" style="transform: translateZ(0px)">
+                  <div
+                    class="amap-layer amap-satellite"
+                    style="
+                      position: absolute;
+                      z-index: 2;
+                      top: 300px;
+                      left: 950px;
+                      display: block;
+                    "
+                  >
+                    <img
+                      src="https://webst02.is.autonavi.com/appmaptile?style=6&amp;x=6526&amp;y=3467&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: 926px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst01.is.autonavi.com/appmaptile?style=6&amp;x=6526&amp;y=3466&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: 926px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst04.is.autonavi.com/appmaptile?style=6&amp;x=6526&amp;y=3465&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: 926px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst01.is.autonavi.com/appmaptile?style=6&amp;x=6525&amp;y=3467&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: 670px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst04.is.autonavi.com/appmaptile?style=6&amp;x=6525&amp;y=3466&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: 670px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst03.is.autonavi.com/appmaptile?style=6&amp;x=6525&amp;y=3465&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: 670px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst04.is.autonavi.com/appmaptile?style=6&amp;x=6524&amp;y=3467&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: 414px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst03.is.autonavi.com/appmaptile?style=6&amp;x=6524&amp;y=3466&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: 414px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst02.is.autonavi.com/appmaptile?style=6&amp;x=6524&amp;y=3465&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: 414px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst03.is.autonavi.com/appmaptile?style=6&amp;x=6523&amp;y=3467&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: 158px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst02.is.autonavi.com/appmaptile?style=6&amp;x=6523&amp;y=3466&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: 158px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst01.is.autonavi.com/appmaptile?style=6&amp;x=6523&amp;y=3465&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: 158px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst02.is.autonavi.com/appmaptile?style=6&amp;x=6522&amp;y=3467&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: -98px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst01.is.autonavi.com/appmaptile?style=6&amp;x=6522&amp;y=3466&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: -98px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst04.is.autonavi.com/appmaptile?style=6&amp;x=6522&amp;y=3465&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: -98px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst01.is.autonavi.com/appmaptile?style=6&amp;x=6521&amp;y=3467&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: -354px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst04.is.autonavi.com/appmaptile?style=6&amp;x=6521&amp;y=3466&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: -354px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst03.is.autonavi.com/appmaptile?style=6&amp;x=6521&amp;y=3465&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: -354px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst04.is.autonavi.com/appmaptile?style=6&amp;x=6520&amp;y=3467&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: -610px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst03.is.autonavi.com/appmaptile?style=6&amp;x=6520&amp;y=3466&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: -610px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst02.is.autonavi.com/appmaptile?style=6&amp;x=6520&amp;y=3465&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: -610px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst03.is.autonavi.com/appmaptile?style=6&amp;x=6519&amp;y=3467&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: -866px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst02.is.autonavi.com/appmaptile?style=6&amp;x=6519&amp;y=3466&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: -866px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst01.is.autonavi.com/appmaptile?style=6&amp;x=6519&amp;y=3465&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: -866px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst02.is.autonavi.com/appmaptile?style=6&amp;x=6518&amp;y=3467&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: -1122px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst01.is.autonavi.com/appmaptile?style=6&amp;x=6518&amp;y=3466&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: -1122px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://webst04.is.autonavi.com/appmaptile?style=6&amp;x=6518&amp;y=3465&amp;z=13"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: -1122px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    />
+                  </div>
+                  <div
+                    class="amap-layer amap-roadnet"
+                    style="
+                      position: absolute;
+                      z-index: 3;
+                      top: 300px;
+                      left: 950px;
+                      display: block;
+                    "
+                  >
+                    <img
+                      src="https://wprd02.is.autonavi.com/appmaptile?x=6526&amp;y=3467&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: 926px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd01.is.autonavi.com/appmaptile?x=6526&amp;y=3466&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: 926px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd04.is.autonavi.com/appmaptile?x=6526&amp;y=3465&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: 926px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd01.is.autonavi.com/appmaptile?x=6525&amp;y=3467&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: 670px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd04.is.autonavi.com/appmaptile?x=6525&amp;y=3466&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: 670px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd03.is.autonavi.com/appmaptile?x=6525&amp;y=3465&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: 670px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd04.is.autonavi.com/appmaptile?x=6524&amp;y=3467&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: 414px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd03.is.autonavi.com/appmaptile?x=6524&amp;y=3466&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: 414px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd02.is.autonavi.com/appmaptile?x=6524&amp;y=3465&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: 414px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd03.is.autonavi.com/appmaptile?x=6523&amp;y=3467&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: 158px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd02.is.autonavi.com/appmaptile?x=6523&amp;y=3466&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: 158px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd01.is.autonavi.com/appmaptile?x=6523&amp;y=3465&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: 158px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd02.is.autonavi.com/appmaptile?x=6522&amp;y=3467&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: -98px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd01.is.autonavi.com/appmaptile?x=6522&amp;y=3466&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: -98px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd04.is.autonavi.com/appmaptile?x=6522&amp;y=3465&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: -98px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd01.is.autonavi.com/appmaptile?x=6521&amp;y=3467&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: -354px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd04.is.autonavi.com/appmaptile?x=6521&amp;y=3466&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: -354px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd03.is.autonavi.com/appmaptile?x=6521&amp;y=3465&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: -354px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd04.is.autonavi.com/appmaptile?x=6520&amp;y=3467&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: -610px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd03.is.autonavi.com/appmaptile?x=6520&amp;y=3466&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: -610px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd02.is.autonavi.com/appmaptile?x=6520&amp;y=3465&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: -610px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd03.is.autonavi.com/appmaptile?x=6519&amp;y=3467&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: -866px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd02.is.autonavi.com/appmaptile?x=6519&amp;y=3466&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: -866px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd01.is.autonavi.com/appmaptile?x=6519&amp;y=3465&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: -866px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd02.is.autonavi.com/appmaptile?x=6518&amp;y=3467&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: 123px;
+                        left: -1122px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd01.is.autonavi.com/appmaptile?x=6518&amp;y=3466&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -133px;
+                        left: -1122px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    /><img
+                      src="https://wprd04.is.autonavi.com/appmaptile?x=6518&amp;y=3465&amp;z=13&amp;lang=zh_cn&amp;size=1&amp;scl=1&amp;style=8&amp;ltype=11"
+                      style="
+                        position: absolute;
+                        top: -389px;
+                        left: -1122px;
+                        width: 256px;
+                        height: 256px;
+                        z-index: 13;
+                      "
+                    />
+                  </div>
+                  <div
+                    class="amap-markers"
+                    style="
+                      position: absolute;
+                      z-index: 120;
+                      top: 300px;
+                      left: 950px;
+                    "
+                  ></div>
+                  <canvas
+                    class="amap-labels"
+                    draggable="false"
+                    width="1900"
+                    height="600"
+                    style="
+                      position: absolute;
+                      z-index: 99;
+                      height: 600px;
+                      width: 1900px;
+                      top: 0px;
+                      left: 0px;
+                    "
+                  ></canvas>
+                </div>
+                <div class="amap-overlays" style=""></div>
+              </div>
+            </div>
+            <div style="display: none"></div>
+            <div class="amap-controls"></div>
+            <a class="amap-logo"
+              ><img src="https://webapi.amap.com/theme/v1.3/logo@1x.png"
+            /></a>
+            <div
+              class="amap-copyright"
+              style="display: none; visibility: visible"
+            >
+              <!--v1.4.16-->
+              © 2022 AutoNavi <span class="amap-mcode">- GS(2021)6342号</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="you" id="you">
+            <div class="div11">游玩指南</div>
+            <hr class="hr1" size="3px" color="chocolate" />
+            <div class="data1">
+              <ul>
+                <a href="#"
+                  ><li>
+                    <img src="img/chuxin.png" /><span id="span">出行须知</span>
+                  </li></a
+                >
+                <a href="#"
+                  ><li>
+                    <img src="img/time.png" /><span id="span">旅游时间</span>
+                  </li></a
+                >
+                <a href="#"
+                  ><li>
+                    <img src="img/price.png" /><span id="span">旅游花销</span>
+                  </li></a
+                >
+                <a href="#"
+                  ><li>
+                    <img src="img/fengshu.png" /><span id="span"
+                      >风俗与禁忌</span
+                    >
+                  </li></a
+                >
+              </ul>
+            </div>
+            <div class="div21"><a href="#">查看更多&gt; </a></div>
+            <a href="#"> </a>
+          </div>
+          <a href="#">
+            <hr class="hr2" />
+          </a>
+          <div class="div22">
+            <a href="#"> </a>
+            <div>
+              <a href="#"> </a>
+              <ul>
+                <a href="#">
+                  <li><h4>目的地</h4></li>
+                </a>
+                <li><a href="#"></a><a href="mudidis?id=甲秀楼">甲秀楼</a></li>
+                <li><a href="mudidis?id=遵义会址">遵义会址</a></li>
+                <li><a href="mudidis?id=梵净山">梵净山</a></li>
+                <li><a href="mudidis?id=黄果树瀑布">黄果树瀑布</a></li>
+                <li><a href="mudidis?id=乌蒙山大草原">乌蒙山大草原</a></li>
+                <li><a href="mudidis?id=千户苗寨">千户苗寨</a></li>
+                <li><a href="mudidis?id=万峰林">万峰林</a></li>
+                <li><a href="mudidis?id=黔灵山公园">黔灵山公园</a></li>
+              </ul>
+            </div>
+            <div>
+              <ul>
+                <li><h4>旅游订购</h4></li>
+                <li><a href="hotel1">住宿预定</a></li>
+              </ul>
+            </div>
+            <div>
+              <ul>
+                <li><h4>商城</h4></li>
+                <li><a href="#">目的地指南</a></li>
+                <li><a href="Shopping1?s=纪念品">纪念品</a></li>
+                <li><a href="Shopping1?s=特产">特产</a></li>
+              </ul>
+            </div>
+            <div>
+              <ul>
+                <li><h4>用户</h4></li>
+                <li><a href="denglu?url=index">登录</a></li>
+              </ul>
+            </div>
+          </div>
+          <hr class="hr2" />
+
+          <div>
+            <div class="img2">
+              <img src="img/gui.png" width="90px" height="90px" alt=" " />
+              <div class="ulli">
+                <ul>
+                  <li><a href="#">关于我们</a></li>
+                  <li><a href="#">联系我们</a></li>
+                  <li><a href="#">加入我们</a></li>
+                  <li><a href="#">商业广告</a></li>
+                </ul>
+                <div class="img4">
+                  <a href="#"><img src="img/wx.png" /></a>
+                </div>
+                <div class="img5">
+                  <a href="#"><img src="img/wb.png" /></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="img3">
+            ©2021 <img src="img/gui.png" width="20px" height="20px" /> All
+            rights reserverd
+          </div>
+        </div>
+      </div>
+    </form>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/swiper.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&amp;key=您申请的key值"></script>
+    <script>
+      var x = 106.628201;
+      var y = 26.646694;
+      var map = new AMap.Map("container", {
+        center: [x, y],
+        layers: [
+          //只显示默认图层的时候，layers可以缺省
+          new AMap.TileLayer.Satellite(),
+          // 路网
+          new AMap.TileLayer.RoadNet(),
+        ],
+        zoom: 13,
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CH">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flex 后台</title>
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        background-color: #eee;
+      }
+      .flex {
+        display: flex;
+      }
+      .shadow {
+        box-shadow: rgb(0 0 0/ 20%) 0px 2px 1px -1px,
+          rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+      }
+      .baiSe {
+        background-color: white;
+      }
+      .flex1 {
+        flex: 1;
+      }
+      .column {
+        flex-direction: column;
+      }
+      .mg8 {
+        margin: 8px;
+      }
+      .mgr8 {
+        margin-right: 8px;
+      }
+      .mgt8 {
+        margin-top: 8px;
+      }
+      .daoHang {
+        padding: 10px 20px;
+        border-bottom: 1px solid rgb(190, 190, 190);
+        font-size: 14px;
+        color: #666;
+      }
+      /*当屏幕宽度小于600的时候要改变的css*/
+      @media (max-width: 600px) {
+        .ceBian {
+          display: none;
+        }
+        .neiRongLan {
+          flex-direction: column;
+        }
+        .shuJuQu {
+          flex-direction: column;
+        }
+        .youQu {
+          margin-left: 8px;
+        }
+        .shuJu {
+          margin: 0 0 8px;
+          flex: auto;
+        }
+        /*移除滚动条*/
+        .neiRongLan::-webkit-scrollbar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body class="flex">
+    <!--侧边栏-->
+    <div style="width: 200px; z-index: 2" class="ceBian baiSe shadow">
+      <!--头像栏-->
+      <div
+        style="
+          padding: 10px;
+          justify-content: center;
+          align-items: center;
+          border-bottom: 3px solid #999;
+        "
+        class="flex"
+      >
+        <img
+          alt=""
+          src="https://kangwenchang.com/logo.png"
+          width="40px"
+          height="40px"
+        />
+        <p style="margin-left: 10px">这是一个头像</p>
+      </div>
+      <!--导航栏-->
+      <div class="flex1">
+        <!--导航条-->
+        <div class="daoHang">导航</div>
+        <div class="daoHang">导航</div>
+        <div class="daoHang">导航</div>
+        <div class="daoHang">导航</div>
+      </div>
+    </div>
+    <!--主区域-->
+    <div class="flex1 flex column">
+      <!--头部栏-->
+      <div
+        style="
+          padding: 8px;
+          height: 60px;
+          z-index: 1;
+          justify-content: center;
+          align-items: center; ;
+        "
+        class="baiSe shadow mg8 flex"
+      >
+        <p>这是一个简单的后台网站 横屏是完整版</p>
+      </div>
+      <!--内容区-->
+      <div style="overflow: auto" class="flex1 flex shadow neiRongLan">
+        <!--左区-->
+        <div style="flex: 3" class="column flex mg8 shadow">
+          <!--数据区-->
+          <div class="flex">
+            <!--数据块-->
+            <div style="height: 100px" class="shuJu baiSe flex1 mgr8 shadow">
+              <a href="https://space.bilibili.com/626749843">B站主页</a>
+            </div>
+            <div
+              style="height: 100px"
+              class="shuJu baiSe flex1 mgr8 shadow"
+            ></div>
+            <div
+              style="height: 100px"
+              class="shuJu baiSe flex1 mgr8 shadow"
+            ></div>
+            <div style="height: 100px" class="shuJu baiSe flex1 shadow"></div>
+          </div>
+          <!--列表区-->
+          <div class="flex column">
+            <!--列表项-->
+            <div
+              style="height: 160px; align-items: center"
+              class="baiSe mgt8 shadow flex"
+            >
+              <img
+                src="https://i2.hdslb.com/bfs/archive/98fca0bbf25be73a5b5d963269441573103b0d81.jpg"
+                alt="视频封面"
+                width="80px"
+                height="80px"
+              />
+              <a href="https://www.bilibili.com/video/BV1Dv4y1u7XK"
+                >一分钟教你如何怎么快速下载B站视频和视频封面！ 唧唧down</a
+              >
+            </div>
+            <div
+              style="height: 160px; align-items: center"
+              class="baiSe mgt8 shadow flex"
+            >
+              <img
+                src="https://i0.hdslb.com/bfs/archive/5cc2f47812208d01c945e944de8ccb3e14c29196.jpg"
+                alt="视频封面"
+                width="80px"
+                height="80px"
+              />
+              <a href="https://www.bilibili.com/video/BV1Dv4y1u7XK"
+                >那一晚，NIKO和Mopoz都喝醉了</a
+              >
+            </div>
+            <div
+              style="height: 160px; align-items: center"
+              class="baiSe mgt8 shadow flex"
+            >
+              <img
+                src="http://i1.hdslb.com/bfs/archive/48eed436bf87d907feb8e188ae169abea99c6fff.jpg"
+                alt="视频封面"
+                width="80px"
+                height="80px"
+              />
+              <a href="https://www.bilibili.com/video/BV1YA4y1d7jy"
+                >电子竞技，只是一些冰冷的游戏吗</a
+              >
+            </div>
+          </div>
+        </div>
+        <!--右区-->
+        <div style="flex: 1" class="youQu column flex mgr8 mgt8 shadow">
+          <!--提示区-->
+          <div style="height: 150px" class="baiSe shadow"></div>
+          <!--消息区-->
+          <div style="height: 300px" class="baiSe mgt8 shadow"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
