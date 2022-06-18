@@ -1,0 +1,45 @@
+ <!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Typing effect..</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+}
+body {
+background: #2bbb97;
+color: white;
+}
+span{
+color: #2bbb97;
+}
+.bg {
+background: #1f1f3b;
+padding: 250px 0px;
+transform: skew(0deg, -10deg);
+margin-top: -200px;
+}
+h1 { font-size: 80px;
+font: monospace;
+width: 14ch;
+animation: typing 2s steps(14) infinite, blink 0.5s step-end infinite alternate;
+overflow: hidden;
+white-space: nowrap;
+margin-left: 50px;
+border-right: 3px solid;
+}
+@keyframes typing { from { width: 0;} }
+@keyframes blink { 50% { background: transparent; } }
+</style>
+</head>
+<body>
+<div class="bg">
+<h1>Typing <span>Effect..</span></h1>
+</div>
+</body>
+</html>
