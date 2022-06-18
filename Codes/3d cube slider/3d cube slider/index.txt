@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+<input type="radio" name="buttons" id="r1" checked>    
+<input type="radio" name="buttons" id="r2">    
+<input type="radio" name="buttons" id="r3">    
+<input type="radio" name="buttons" id="r4">   
+
+<div class="controls">
+    <label for="r1"></label>
+    <label for="r2"></label>
+    <label for="r3"></label>
+    <label for="r4"></label>
+</div>
+    
+<div class="container">
+
+    <div class="image-container">
+        <div class="box top">
+            <img src="images/img1.jpg" alt="">
+            <h3>usa</h3>
+        </div>
+        <div class="box back">
+            <img src="images/img2.jpg" alt="">
+            <h3>india</h3>
+        </div>
+        <div class="box bottom">
+            <img src="images/img3.jpg" alt="">
+            <h3>japan</h3>
+        </div>
+        <div class="box front">
+            <img src="images/img4.jpg" alt="">
+            <h3>paris</h3>
+        </div>
+    </div>
+
+    <div class="box-container">
+        <div class="box front">
+           <div class="content">
+                <span class="number">01</span>
+                <h3>paris</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor mollitia voluptates saepe tempora ab sit, vitae ad iusto assumenda tempore quis consectetur? Voluptas ullam reiciendis excepturi expedita, minus veritatis quia.</p>
+                <a href="#">read more</a>
+           </div>
+        </div>
+        <div class="box bottom">
+            <div class="content">
+                <span class="number">02</span>
+                <h3>usa</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor mollitia voluptates saepe tempora ab sit, vitae ad iusto assumenda tempore quis consectetur? Voluptas ullam reiciendis excepturi expedita, minus veritatis quia.</p>
+                <a href="#">read more</a>
+            </div>
+        </div>
+        <div class="box back">
+            <div class="content">
+                <span class="number">03</span>
+                <h3>india</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor mollitia voluptates saepe tempora ab sit, vitae ad iusto assumenda tempore quis consectetur? Voluptas ullam reiciendis excepturi expedita, minus veritatis quia.</p>
+                <a href="#">read more</a>
+            </div>            
+        </div>
+        <div class="box top">
+            <div class="content">
+                <span class="number">04</span>
+                <h3>japan</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor mollitia voluptates saepe tempora ab sit, vitae ad iusto assumenda tempore quis consectetur? Voluptas ullam reiciendis excepturi expedita, minus veritatis quia.</p>
+                <a href="#">read more</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
