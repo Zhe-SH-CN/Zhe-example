@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>下拉菜单</title>
+    <style>
+      .nav {
+        height: 40px;
+        background: #fff;
+        /* 加上阴影 */
+        box-shadow: 0 1px 3px #bbb;
+      }
+      body {
+        background: #eee;
+        margin: 0;
+      }
+      .drop {
+        float: right;
+        /* 靠右  */
+        /* 设置行高 */
+        line-height: 40px;
+        /* 设置宽 */
+        width: 80px;
+
+        /* 背景颜色 */
+        background: #fff;
+        /* 水平居中 */
+        text-align: center;
+        /* 右边距 */
+        margin-right: 10px;
+      }
+      .droplist {
+        /* 给下拉菜单上阴影 */
+        box-shadow: 0 1px 2px #bbb;
+        /* 把它隐藏起来 */
+        display: none;
+      }
+      /* 鼠标移动到上方时显示 */
+      .drop:hover .droplist {
+        display: block;
+      }
+
+      /* 修改超链接样式 */
+      .droplist a {
+        color: #000;
+        /* 去掉下划线 */
+        text-decoration: none;
+        /* 改变超链接不可调宽高的显示状态 */
+        display: block;
+      }
+
+      /* 超链接鼠标悬停时变色 */
+      .droplist a:hover {
+        background: #bbb;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 顶部状态条 -->
+    <div class="nav">
+      <div class="drop">
+        <span>我的账号</span>
+        <div class="droplist">
+          <a href="#">账号设置</a>
+          <a href="#">退出登录</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
