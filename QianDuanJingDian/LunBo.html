@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>无缝轮播</title>
+    <link rel="stylesheet" href="LunBo.css" />
+  </head>
+  <body>
+    <div class="box">
+      <div class="list">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+      </div>
+    </div>
+    <script>
+      let list = document.querySelector(".list");
+      let box = document.querySelector(".box");
+      //复制一份
+      list.innerHTML += list.innerHTML;
+      let left = 0;
+
+      //定义定时器
+      let timer;
+      function move() {
+        //养成好习惯 先清零
+        clearInterval(timer);
+        timer = setInterval(function () {
+          left -= 2;
+          //如果到头了，就让left归零
+          if (left === -(6 * 80 + 6 * 10)) {
+            left = 0;
+          }
+          list.style.left = left + "px";
+        }, 20);
+        //这是定时函数 20是表示20毫秒
+      }
+      move();
+
+      //如果鼠标移动到上面了，就停止
+      box.onmouseenter = function () {
+        clearInterval(timer);
+      };
+      //鼠标移走就继续动
+      box.onmouseleave = function () {
+        move();
+      };
+    </script>
+  </body>
+</html>

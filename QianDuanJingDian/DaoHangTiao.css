@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  /* 各种样式为空 */
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+.navlist a {
+  color: #fff;
+  display: block;
+}
+.nav {
+  height: 40px;
+  background: #333;
+  box-shadow: 0 1px 2px #666;
+}
+.btli {
+  /* 左浮动，唐他们横排 */
+  float: left;
+  width: 100px;
+  line-height: 40px;
+  text-align: center;
+}
+/* 鼠标悬停背景变色 */
+.navlist a:hover {
+  background: #666;
+}
+.droplist {
+  /* 改变下拉菜单颜色 */
+  background: #333;
+  /* 加阴影 */
+  box-shadow: 0 1px 2px #333;
+  /* 让他不显示*/
+  display: none;
+  /* 变圆角 */
+  border-radius: 6px;
+  /* 超出部分隐藏 */
+  overflow: hidden;
+}
+.btli:hover .droplist {
+  /* 鼠标移动到导航条时候显示 */
+  display: block;
+}
+.droplist li {
+  /* 每个上面加一条线隔开 */
+  border-top: 1px solid #666;
+}

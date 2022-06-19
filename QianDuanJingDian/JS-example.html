@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo</title>
+    <link rel="stylesheet" href="JS-example.css" />
+  </head>
+  <body>
+    <input type="text" id="inp" /><button id="btadd">添加</button>
+    <div class="box"></div>
+    <script>
+      let etadd = document.querySelector("#btadd");
+      let ebox = document.querySelector(".box");
+      let einp = document.querySelector("#inp");
+      etadd.onclick = function () {
+        ebox.insertAdjacentHTML(
+          "beforeend",
+          "<div><button>完成</button><button>取消</button><button>删除</button><span>" +
+            einp.value +
+            "</span></div>"
+        );
+        // 每次点添加 输入框清空 且焦点到输入框上
+        einp.value = "";
+        einp.focus();
+      };
+      ebox.onclick = function () {
+        //细分到每一个按钮
+        let tg = event.target;
+        if (tg.innerHTML == "完成") {
+          let tgkids = tg.parentElement.children;
+          // 给第四个元素加划线
+          tgkids[3].classList.add("textdone");
+        } else if (tg.innerHTML == "取消") {
+          let tgkids = tg.parentElement.children;
+          // 给第四个元素取消划线
+          tgkids[3].classList.remove("textdone");
+        } else if (tg.innerHTML == "删除") {
+          //   删除盒子元素
+          let tgpar = tg.parentElement;
+          tgpar.remove();
+        }
+      };
+    </script>
+  </body>
+</html>

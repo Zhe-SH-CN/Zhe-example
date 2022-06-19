@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  /* 各种样式为空 */
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(#1d2b48, #4f4266);
+}
+
+.out {
+  width: 800px;
+  height: 200px;
+  position: relative;
+  margin: 0 auto;
+  top: 100px;
+}
+.out .inner {
+  width: 100%;
+  height: 100%;
+}
+.out .inner .img {
+  width: 400px;
+  height: 200px;
+  position: absolute;
+  transition: 0.3s;
+}
+.out .inner .img img {
+  width: 100%;
+  height: 100%;
+}
+
+.out .arrow {
+  font-size: 32px;
+}
+.out .arrow i {
+  position: relative;
+  color: #fff;
+  z-index: 9999;
+  cursor: pointer;
+  top: -100px;
+  font-size: 40px;
+  font-weight: 600;
+}
+.out .arrow .left {
+  left: -50px;
+}
+.out .arrow .right {
+  left: 780px;
+}
+.out .button {
+  width: 175px;
+  height: 15px;
+  position: absolute;
+  z-index: 9999;
+  left: 50%;
+
+  transform: translateX(-50%);
+}
+.out .button p {
+  width: 15px;
+  height: 15px;
+  float: left;
+  margin: 0 5px;
+  background: silver;
+}
+
+.out .button p:first-child {
+  background: rgb(20, 134, 187);
+}
+/* 设置id样式 */
+.out #last {
+  transform: translateX(0);
+  z-index: 9;
+  opacity: 1;
+}
+.out #first {
+  transform: translateX(200px) scale(1.3);
+  z-index: 99;
+  opacity: 1;
+}
+.out #second {
+  transform: translateX(400px);
+  z-index: 9;
+  opacity: 1;
+}
+.out #left {
+  transform: translateX(-100px);
+  z-index: 1;
+  opacity: 0;
+}
+.out #right {
+  transform: translateX(500px);
+  z-index: 1;
+  opacity: 0;
+}

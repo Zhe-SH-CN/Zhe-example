@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+* {
+  padding: 0;
+  /* 各种样式为空 */
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+.box {
+  width: 439px;
+  overflow: hidden;
+  border: 1px solid #333;
+  position: relative;
+  height: 80px;
+}
+.box .list {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+}
+.list div {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  background: #147ecb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.list div:nth-child(6n + 1) {
+  background-color: #ec3945;
+}
+.list div:nth-child(6n + 2) {
+  background: #9d7ae9;
+}
+.list div:nth-child(6n + 3) {
+  background: teal;
+}
+.list div:nth-child(6n + 4) {
+  background: darkslategray;
+}
+.list div:nth-child(6n + 5) {
+  background: orange;
+}
