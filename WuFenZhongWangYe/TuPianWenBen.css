@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+* {
+  /* 各种样式为空 */
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+.ysa {
+  width: 500px;
+  height: 200px;
+  border: 1px solid #ccc;
+  margin-left: auto;
+  margin-right: auto;
+}
+.ysaa {
+  width: 280px;
+  height: 200px;
+  /* 图片左浮动 */
+  float: left;
+}
+.ysbb {
+  width: 212px;
+  height: 200px;
+  float: left;
+  padding: 4px;
+}
